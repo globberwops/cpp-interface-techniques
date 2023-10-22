@@ -1,0 +1,17 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  cert-*,
+  cppcoreguidelines-*,
+  google-*,
+  hicpp-*,
+  misc-*,
+  modernize-*,
+  performance-*,
+  portability-*,
+  readability-*
+FormatStyle: file
+CheckOptions:
+  cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor: true
+  hicpp-special-member-functions.AllowSoleDefaultDtor: true
