@@ -27,6 +27,7 @@
                 "files.associations": {
                     ".clang-format": "yaml",
                     ".clang-tidy": "yaml",
+                    ".clangd": "yaml",
                     ".cmake-format": "yaml"
                 },
                 "files.exclude": {

@@ -32,9 +32,9 @@ class Lane {
     return right_lane_.has_value() ? right_lane_.value().get() : throw std::runtime_error("No right lane");
   }
 
-  auto operator==(const Lane& other) const -> bool { return &other == this; }
+  auto operator==(const Lane& other) const noexcept -> bool { return &other == this; }
 
-  auto operator!=(const Lane& other) const -> bool { return &other != this; }
+  auto operator!=(const Lane& other) const noexcept -> bool { return &other != this; }
 
  private:
   friend class Road;
