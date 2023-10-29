@@ -1,6 +1,6 @@
 add_executable(CrtpTest)
 
-target_sources(CrtpTest PRIVATE crtp_test.cpp)
+target_sources(CrtpTest PRIVATE crtp_exceptions_map.cpp crtp_optional_map.cpp)
 
 target_link_libraries(CrtpTest PRIVATE GTest::gtest_main CppInterfaceTechniques::CrtpAdaptersExceptionsMap)
 

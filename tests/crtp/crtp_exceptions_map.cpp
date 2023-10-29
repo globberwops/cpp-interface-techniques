@@ -10,7 +10,7 @@
 #include "crtp/interfaces/i_road.hpp"
 #include "exceptions_map/map.hpp"
 
-TEST(CrtpTest, MapAdapter) {
+TEST(CrtpTest, ExceptionsMap) {
   using gw::cpp_interface_techniques::crtp::LaneId;
   using gw::cpp_interface_techniques::crtp::RoadId;
 

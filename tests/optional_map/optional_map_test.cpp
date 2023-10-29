@@ -3,29 +3,15 @@
 
 #include <gtest/gtest.h>
 
+#include <functional>
+
 #include "optional_map/lane.hpp"
 #include "optional_map/map.hpp"
 #include "optional_map/road.hpp"
 
 class OptionalMapTest : public testing::Test {
- public:
-  static constexpr auto kLaneWidth = 3.5;
-  static constexpr auto kLaneLength = 100.0;
-
  protected:
-  void SetUp() override {
-    for (auto i = 0U; i <= 2; ++i) {
-      auto road = map_.AddRoadBack();
-
-      for (auto j = 0U; j <= 2; ++j) {
-        road.and_then([](auto road_inner) { return road_inner.get().AddLaneRight(); }).and_then([](auto lane) {
-          lane.get().SetLength(kLaneLength);
-          lane.get().SetWidth(kLaneWidth);
-          return std::make_optional(lane);
-        });
-      }
-    }
-  }
+  void SetUp() override { map_ = gw::cpp_interface_techniques::optional_map::MapFactory::Create(); }
 
   auto GetMap() -> gw::cpp_interface_techniques::optional_map::Map& { return map_; }
 
@@ -52,6 +38,9 @@ TEST_F(OptionalMapTest, LaneNeighbors) {
 }
 
 TEST_F(OptionalMapTest, LaneLengthAndWidth) {
+  const auto& kLaneLength = gw::cpp_interface_techniques::optional_map::MapFactory::kLaneLength;
+  const auto& kLaneWidth = gw::cpp_interface_techniques::optional_map::MapFactory::kLaneWidth;
+
   for (auto i = 0U; i <= 2; ++i) {
     ASSERT_TRUE(GetMap().GetRoad(i));
     auto& road = GetMap().GetRoad(i)->get();

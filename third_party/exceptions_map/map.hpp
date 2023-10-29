@@ -11,11 +11,11 @@ namespace gw::cpp_interface_techniques::exceptions_map {
 
 class Map {
  public:
-  auto GetRoad(size_t index) -> Road& { return roads_.at(index); }
+  auto GetRoad(size_t index) -> std::reference_wrapper<Road> { return roads_.at(index); }
 
-  [[nodiscard]] auto GetRoad(size_t index) const -> const Road& { return roads_.at(index); }
+  [[nodiscard]] auto GetRoad(size_t index) const -> std::reference_wrapper<const Road> { return roads_.at(index); }
 
-  auto AddRoadFront() noexcept -> Road& {
+  auto AddRoadFront() noexcept -> std::reference_wrapper<Road> {
     auto& road = roads_.emplace_front();
 
     if (roads_.size() > 1U) {
@@ -27,7 +27,7 @@ class Map {
     return road;
   }
 
-  auto AddRoadBack() noexcept -> Road& {
+  auto AddRoadBack() noexcept -> std::reference_wrapper<Road> {
     auto& road = roads_.emplace_back();
 
     if (roads_.size() > 1U) {
@@ -45,6 +45,27 @@ class Map {
 
  private:
   std::deque<Road> roads_;
+};
+
+struct MapFactory {
+  static constexpr auto kLaneWidth = 3.5;
+  static constexpr auto kLaneLength = 100.0;
+
+  static auto Create() noexcept -> Map {
+    Map map;
+
+    for (auto i = 0U; i <= 2; ++i) {
+      auto road = map.AddRoadBack();
+
+      for (auto j = 0U; j <= 2; ++j) {
+        auto lane = road.get().AddLaneRight();
+        lane.get().SetLength(kLaneLength);
+        lane.get().SetWidth(kLaneWidth);
+      }
+    }
+
+    return map;
+  }
 };
 
 }  // namespace gw::cpp_interface_techniques::exceptions_map

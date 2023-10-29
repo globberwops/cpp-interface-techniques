@@ -27,7 +27,7 @@ class Road {
     return lanes_[index];
   }
 
-  auto AddLaneLeft() noexcept -> std::optional<std::reference_wrapper<Lane>> {
+  auto AddLaneLeft() noexcept -> std::reference_wrapper<Lane> {
     auto& lane = lanes_.emplace_front();
 
     if (lanes_.size() > 1U) {
@@ -39,7 +39,7 @@ class Road {
     return lane;
   }
 
-  auto AddLaneRight() noexcept -> std::optional<std::reference_wrapper<Lane>> {
+  auto AddLaneRight() noexcept -> std::reference_wrapper<Lane> {
     auto& lane = lanes_.emplace_back();
 
     if (lanes_.size() > 1U) {
