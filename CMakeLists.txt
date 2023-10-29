@@ -1,14 +1,26 @@
 cmake_minimum_required(VERSION 3.24)
 
+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(CompilerWarnings)
+
 project(CppInterfaceTechniques CXX)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+option(CPP_INTERFACE_TECHNIQUES_BUILD_BENCHMARKS "Build benchmarks" ${PROJECT_IS_TOP_LEVEL})
+option(CPP_INTERFACE_TECHNIQUES_BUILD_DOCS "Build documentation" ${PROJECT_IS_TOP_LEVEL})
+option(CPP_INTERFACE_TECHNIQUES_BUILD_TESTS "Build tests" ${PROJECT_IS_TOP_LEVEL})
 
-include(CTest)
-enable_testing()
-
+add_subdirectory(src)
 add_subdirectory(third_party)
-add_subdirectory(tests)
-add_subdirectory(docs)
+
+if(CPP_INTERFACE_TECHNIQUES_BUILD_BENCHMARKS)
+  add_subdirectory(benchmarks)
+endif()
+
+if(CPP_INTERFACE_TECHNIQUES_BUILD_DOCS)
+  add_subdirectory(docs)
+endif()
+
+if(CPP_INTERFACE_TECHNIQUES_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(tests)
+endif()

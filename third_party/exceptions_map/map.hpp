@@ -1,10 +1,13 @@
+// Copyright (c) 2023 Martin Stump
+// SPDX-License-Identifier: BSL-1.0
+
 #pragma once
 
 #include <deque>  // for std::deque
 
 #include "exceptions_map/road.hpp"  // for exceptions_map::Road
 
-namespace exceptions_map {
+namespace gw::cpp_interface_techniques::exceptions_map {
 
 class Map {
  public:
@@ -12,7 +15,7 @@ class Map {
 
   [[nodiscard]] auto GetRoad(size_t index) const -> const Road& { return roads_.at(index); }
 
-  auto AddRoadFront() -> Road& {
+  auto AddRoadFront() noexcept -> Road& {
     auto& road = roads_.emplace_front();
 
     if (roads_.size() > 1U) {
@@ -24,7 +27,7 @@ class Map {
     return road;
   }
 
-  auto AddRoadBack() -> Road& {
+  auto AddRoadBack() noexcept -> Road& {
     auto& road = roads_.emplace_back();
 
     if (roads_.size() > 1U) {
@@ -44,4 +47,4 @@ class Map {
   std::deque<Road> roads_;
 };
 
-}  // namespace exceptions_map
+}  // namespace gw::cpp_interface_techniques::exceptions_map

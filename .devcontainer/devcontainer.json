@@ -21,6 +21,7 @@
             ],
             "settings": {
                 "C_Cpp.intelliSenseEngine": "disabled",
+                "clangd.path": "clangd-18",
                 "cmake.exportCompileCommandsFile": true,
                 "cmake.generator": "Ninja Multi-Config",
                 "cmake.installPrefix": "${workspaceFolder}/build/prefix",

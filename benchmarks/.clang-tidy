@@ -1,0 +1,5 @@
+---
+InheritParentConfig: true
+CheckOptions:
+  readability-identifier-naming.FunctionIgnoredRegexp: ^BM_[A-Za-z]+ # benchmark
+  readability-identifier-length.IgnoredVariableNames: _ # unused variable

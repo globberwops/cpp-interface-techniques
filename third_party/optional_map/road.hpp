@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Martin Stump
+// SPDX-License-Identifier: BSL-1.0
+
 #pragma once
 
 #include <deque>       // for std::deque
@@ -6,7 +9,7 @@
 
 #include "optional_map/lane.hpp"  // for optional_map::Lane
 
-namespace optional_map {
+namespace gw::cpp_interface_techniques::optional_map {
 
 class Road {
  public:
@@ -81,4 +84,4 @@ class Road {
   std::optional<std::reference_wrapper<Road>> previous_road_{};
 };
 
-}  // namespace optional_map
+}  // namespace gw::cpp_interface_techniques::optional_map

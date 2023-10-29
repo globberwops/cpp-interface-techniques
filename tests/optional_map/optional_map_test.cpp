@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Martin Stump
+// SPDX-License-Identifier: BSL-1.0
+
 #include <gtest/gtest.h>
 
 #include "optional_map/lane.hpp"
@@ -15,7 +18,7 @@ class OptionalMapTest : public testing::Test {
       auto road = map_.AddRoadBack();
 
       for (auto j = 0U; j <= 2; ++j) {
-        road.and_then([](auto road) { return road.get().AddLaneRight(); }).and_then([](auto lane) {
+        road.and_then([](auto road_inner) { return road_inner.get().AddLaneRight(); }).and_then([](auto lane) {
           lane.get().SetLength(kLaneLength);
           lane.get().SetWidth(kLaneWidth);
           return std::make_optional(lane);
@@ -24,10 +27,10 @@ class OptionalMapTest : public testing::Test {
     }
   }
 
-  auto GetMap() -> optional_map::Map& { return map_; }
+  auto GetMap() -> gw::cpp_interface_techniques::optional_map::Map& { return map_; }
 
  private:
-  optional_map::Map map_{};
+  gw::cpp_interface_techniques::optional_map::Map map_{};
 };
 
 TEST_F(OptionalMapTest, RoadPredecessorsAndSuccessors) {

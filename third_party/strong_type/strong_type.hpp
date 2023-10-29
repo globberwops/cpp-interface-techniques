@@ -18,6 +18,9 @@ class StrongType {
   constexpr explicit StrongType(const T& value) noexcept : value_{value} {}
   constexpr explicit StrongType(T&& value) noexcept : value_{std::move(value)} {}
 
+  constexpr auto operator()() const noexcept -> const T& { return value_; }
+  constexpr auto operator()() noexcept -> T& { return value_; }
+
 #if __cplusplus > 201703L && __cpp_impl_three_way_comparison >= 201907L
   constexpr auto operator<=>(const StrongType&) const noexcept = default;
 #else

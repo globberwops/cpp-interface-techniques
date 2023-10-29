@@ -1,9 +1,12 @@
+// Copyright (c) 2023 Martin Stump
+// SPDX-License-Identifier: BSL-1.0
+
 #pragma once
 
 #include <functional>  // for std::reference_wrapper
 #include <optional>    // for std::optional
 
-namespace optional_map {
+namespace gw::cpp_interface_techniques::optional_map {
 
 class Lane {
  public:
@@ -45,4 +48,4 @@ class Lane {
   std::optional<std::reference_wrapper<Lane>> right_lane_{};
 };
 
-}  // namespace optional_map
+}  // namespace gw::cpp_interface_techniques::optional_map

@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Martin Stump
+// SPDX-License-Identifier: BSL-1.0
+
 #include <gtest/gtest.h>
 
 #include <stdexcept>
@@ -54,10 +57,10 @@ class ExceptionsMapTest : public testing::Test {
     lane33.SetWidth(kLaneWidth);
   }
 
-  auto GetMap() -> exceptions_map::Map& { return map_; }
+  auto GetMap() -> gw::cpp_interface_techniques::exceptions_map::Map& { return map_; }
 
  private:
-  exceptions_map::Map map_{};
+  gw::cpp_interface_techniques::exceptions_map::Map map_{};
 };
 
 TEST_F(ExceptionsMapTest, RoadPredecessorsAndSuccessors) {

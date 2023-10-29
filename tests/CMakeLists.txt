@@ -10,4 +10,8 @@ FetchContent_MakeAvailable(GoogleTest)
 
 include(GoogleTest)
 
-add_subdirectory(third_party)
+add_subdirectory(exceptions_map)
+add_subdirectory(optional_map)
+add_subdirectory(pointers_map)
+
+add_subdirectory(crtp)

@@ -1,10 +1,13 @@
+// Copyright (c) 2023 Martin Stump
+// SPDX-License-Identifier: BSL-1.0
+
 #pragma once
 
 #include <functional>  // for std::reference_wrapper
 #include <optional>    // for std::optional
 #include <stdexcept>   // for std::runtime_error
 
-namespace exceptions_map {
+namespace gw::cpp_interface_techniques::exceptions_map {
 
 class Lane {
  public:
@@ -50,4 +53,4 @@ class Lane {
   std::optional<std::reference_wrapper<Lane>> right_lane_{};
 };
 
-}  // namespace exceptions_map
+}  // namespace gw::cpp_interface_techniques::exceptions_map
