@@ -1,4 +1,4 @@
 add_subdirectory(exceptions_map)
 add_subdirectory(optional_map)
 add_subdirectory(pointers_map)
-add_subdirectory(strong_type)
+add_subdirectory(gw)

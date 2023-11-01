@@ -17,7 +17,7 @@ class RoadAdapter : public IRoad<RoadAdapter> {
   explicit RoadAdapter(gw::cpp_interface_techniques::optional_map::Road& road) noexcept : road_{road} {}
 
   auto GetLane(LaneId identifier) noexcept -> std::optional<LaneAdapter> {
-    auto lane = road_.get().GetLane(identifier());
+    auto lane = road_.get().GetLane(*identifier);
     if (lane) {
       return LaneAdapter{*lane};
     }
@@ -25,7 +25,7 @@ class RoadAdapter : public IRoad<RoadAdapter> {
   }
 
   [[nodiscard]] auto GetLane(LaneId identifier) const noexcept -> std::optional<const LaneAdapter> {
-    auto lane = road_.get().GetLane(identifier());
+    auto lane = road_.get().GetLane(*identifier);
     if (lane) {
       return LaneAdapter{*lane};
     }

@@ -3,30 +3,28 @@
 
 #pragma once
 
+#include <gw/crtp.hpp>  // for gw::Crtp
+
 namespace gw::cpp_interface_techniques::crtp {
 
 template <typename Derived>
-class ILane {
+class ILane : private gw::Crtp<ILane, Derived> {
  public:
-  [[nodiscard]] auto GetLength() const noexcept -> double { return Self().GetLength(); }
+  [[nodiscard]] auto GetLength() const noexcept -> double { return this->Self().GetLength(); }
 
-  void SetLength(double length) noexcept { Self().SetLength(length); }
+  void SetLength(double length) noexcept { this->Self().SetLength(length); }
 
-  [[nodiscard]] auto GetWidth() const noexcept -> double { return Self().GetWidth(); }
+  [[nodiscard]] auto GetWidth() const noexcept -> double { return this->Self().GetWidth(); }
 
-  void SetWidth(double width) noexcept { Self().SetWidth(width); }
+  void SetWidth(double width) noexcept { this->Self().SetWidth(width); }
 
-  auto GetLeftLane() noexcept -> Derived& { return Self().GetLeftLane(); }
+  auto GetLeftLane() noexcept -> Derived& { return this->Self().GetLeftLane(); }
 
-  [[nodiscard]] auto GetLeftLane() const noexcept -> const Derived& { return Self().GetLeftLane(); }
+  [[nodiscard]] auto GetLeftLane() const noexcept -> const Derived& { return this->Self().GetLeftLane(); }
 
-  auto GetRightLane() noexcept -> Derived& { return Self().GetRightLane(); }
+  auto GetRightLane() noexcept -> Derived& { return this->Self().GetRightLane(); }
 
-  [[nodiscard]] auto GetRightLane() const noexcept -> const Derived& { return Self().GetRightLane(); }
-
- private:
-  constexpr auto Self() noexcept -> Derived& { return static_cast<Derived&>(*this); }
-  constexpr auto Self() const noexcept -> const Derived& { return static_cast<const Derived&>(*this); }
+  [[nodiscard]] auto GetRightLane() const noexcept -> const Derived& { return this->Self().GetRightLane(); }
 };
 
 }  // namespace gw::cpp_interface_techniques::crtp

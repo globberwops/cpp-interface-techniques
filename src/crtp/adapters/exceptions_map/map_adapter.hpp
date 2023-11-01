@@ -18,7 +18,7 @@ class MapAdapter : public IMap<MapAdapter> {
 
   auto GetRoad(RoadId identifier) noexcept -> std::optional<RoadAdapter> {
     try {
-      return RoadAdapter{map_.get().GetRoad(identifier())};
+      return RoadAdapter{map_.get().GetRoad(*identifier)};
     } catch (...) {
       return std::nullopt;
     }
@@ -26,7 +26,7 @@ class MapAdapter : public IMap<MapAdapter> {
 
   [[nodiscard]] auto GetRoad(RoadId identifier) const noexcept -> std::optional<const RoadAdapter> {
     try {
-      return RoadAdapter{map_.get().GetRoad(identifier())};
+      return RoadAdapter{map_.get().GetRoad(*identifier)};
     } catch (...) {
       return std::nullopt;
     }

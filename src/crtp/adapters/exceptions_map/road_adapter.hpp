@@ -18,7 +18,7 @@ class RoadAdapter : public IRoad<RoadAdapter> {
 
   auto GetLane(LaneId identifier) noexcept -> std::optional<LaneAdapter> {
     try {
-      return LaneAdapter{road_.get().GetLane(identifier())};
+      return LaneAdapter{road_.get().GetLane(*identifier)};
     } catch (...) {
       return std::nullopt;
     }
@@ -26,7 +26,7 @@ class RoadAdapter : public IRoad<RoadAdapter> {
 
   [[nodiscard]] auto GetLane(LaneId identifier) const noexcept -> std::optional<const LaneAdapter> {
     try {
-      return LaneAdapter{road_.get().GetLane(identifier())};
+      return LaneAdapter{road_.get().GetLane(*identifier)};
     } catch (...) {
       return std::nullopt;
     }

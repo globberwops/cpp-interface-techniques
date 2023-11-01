@@ -29,7 +29,8 @@
                     ".clang-format": "yaml",
                     ".clang-tidy": "yaml",
                     ".clangd": "yaml",
-                    ".cmake-format": "yaml"
+                    ".cmake-format": "yaml",
+                    "*.cmake.in": "cmake"
                 },
                 "files.exclude": {
                     "**/.cache": true

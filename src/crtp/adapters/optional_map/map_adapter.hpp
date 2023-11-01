@@ -17,7 +17,7 @@ class MapAdapter : public IMap<MapAdapter> {
   explicit MapAdapter(gw::cpp_interface_techniques::optional_map::Map& map) noexcept : map_{map} {}
 
   auto GetRoad(RoadId identifier) noexcept -> std::optional<RoadAdapter> {
-    auto road = map_.get().GetRoad(identifier());
+    auto road = map_.get().GetRoad(*identifier);
     if (road) {
       return RoadAdapter{*road};
     }
@@ -25,7 +25,7 @@ class MapAdapter : public IMap<MapAdapter> {
   }
 
   [[nodiscard]] auto GetRoad(RoadId identifier) const noexcept -> std::optional<const RoadAdapter> {
-    auto road = map_.get().GetRoad(identifier());
+    auto road = map_.get().GetRoad(*identifier);
     if (road) {
       return RoadAdapter{*road};
     }

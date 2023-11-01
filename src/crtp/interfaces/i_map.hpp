@@ -3,28 +3,26 @@
 
 #pragma once
 
-#include <cstddef>  // for size_t
-
-#include "strong_type/strong_type.hpp"
+#include <cstddef>             // for std::size_t
+#include <gw/crtp.hpp>         // for gw::Crtp
+#include <gw/strong_type.hpp>  // for gw::StrongType
 
 namespace gw::cpp_interface_techniques::crtp {
 
 using RoadId = gw::StrongType<size_t, struct RoadIdTag>;
 
 template <typename Derived>
-class IMap {
+class IMap : private gw::Crtp<IMap, Derived> {
  public:
-  auto GetRoad(RoadId identifier) noexcept -> decltype(auto) { return Self().GetRoad(identifier); }
+  auto GetRoad(RoadId identifier) noexcept -> decltype(auto) { return this->Self().GetRoad(identifier); }
 
-  [[nodiscard]] auto GetRoad(RoadId identifier) const noexcept -> decltype(auto) { return Self().GetRoad(identifier); }
+  [[nodiscard]] auto GetRoad(RoadId identifier) const noexcept -> decltype(auto) {
+    return this->Self().GetRoad(identifier);
+  }
 
-  auto AddRoadFront() noexcept -> decltype(auto) { return Self().AddRoadFront(); }
+  auto AddRoadFront() noexcept -> decltype(auto) { return this->Self().AddRoadFront(); }
 
-  auto AddRoadBack() noexcept -> decltype(auto) { return Self().AddRoadBack(); }
-
- private:
-  constexpr auto Self() noexcept -> Derived& { return static_cast<Derived&>(*this); }
-  constexpr auto Self() const noexcept -> const Derived& { return static_cast<const Derived&>(*this); }
+  auto AddRoadBack() noexcept -> decltype(auto) { return this->Self().AddRoadBack(); }
 };
 
 }  // namespace gw::cpp_interface_techniques::crtp

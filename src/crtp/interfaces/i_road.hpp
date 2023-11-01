@@ -3,36 +3,34 @@
 
 #pragma once
 
-#include <cstddef>  // for size_t
-
-#include "strong_type/strong_type.hpp"
+#include <cstddef>             // for std::size_t
+#include <gw/crtp.hpp>         // for gw::Crtp
+#include <gw/strong_type.hpp>  // for gw::StrongType
 
 namespace gw::cpp_interface_techniques::crtp {
 
 using LaneId = gw::StrongType<size_t, struct LaneIdTag>;
 
 template <typename Derived>
-class IRoad {
+class IRoad : private gw::Crtp<IRoad, Derived> {
  public:
-  auto GetLane(LaneId identifier) noexcept -> decltype(auto) { return Self().GetLane(identifier); }
+  auto GetLane(LaneId identifier) noexcept -> decltype(auto) { return this->Self().GetLane(identifier); }
 
-  [[nodiscard]] auto GetLane(LaneId identifier) const noexcept -> decltype(auto) { return Self().GetLane(identifier); }
+  [[nodiscard]] auto GetLane(LaneId identifier) const noexcept -> decltype(auto) {
+    return this->Self().GetLane(identifier);
+  }
 
-  auto AddLaneLeft() noexcept -> decltype(auto) { return Self().AddLaneLeft(); }
+  auto AddLaneLeft() noexcept -> decltype(auto) { return this->Self().AddLaneLeft(); }
 
-  auto AddLaneRight() noexcept -> decltype(auto) { return Self().AddLaneRight(); }
+  auto AddLaneRight() noexcept -> decltype(auto) { return this->Self().AddLaneRight(); }
 
-  auto GetNextRoad() noexcept -> Derived& { return Self().GetNextRoad(); }
+  auto GetNextRoad() noexcept -> Derived& { return this->Self().GetNextRoad(); }
 
-  [[nodiscard]] auto GetNextRoad() const noexcept -> const Derived& { return Self().GetNextRoad(); }
+  [[nodiscard]] auto GetNextRoad() const noexcept -> const Derived& { return this->Self().GetNextRoad(); }
 
-  auto GetPreviousRoad() noexcept -> Derived& { return Self().GetPreviousRoad(); }
+  auto GetPreviousRoad() noexcept -> Derived& { return this->Self().GetPreviousRoad(); }
 
-  [[nodiscard]] auto GetPreviousRoad() const noexcept -> const Derived& { return Self().GetPreviousRoad(); }
-
- private:
-  constexpr auto Self() noexcept -> Derived& { return static_cast<Derived&>(*this); }
-  constexpr auto Self() const noexcept -> const Derived& { return static_cast<const Derived&>(*this); }
+  [[nodiscard]] auto GetPreviousRoad() const noexcept -> const Derived& { return this->Self().GetPreviousRoad(); }
 };
 
 }  // namespace gw::cpp_interface_techniques::crtp
