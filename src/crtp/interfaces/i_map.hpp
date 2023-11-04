@@ -9,20 +9,20 @@
 
 namespace gw::cpp_interface_techniques::crtp {
 
-using RoadId = gw::StrongType<size_t, struct RoadIdTag>;
+using RoadId = gw::strong_type<size_t, struct RoadIdTag>;
 
 template <typename Derived>
-class IMap : private gw::Crtp<IMap, Derived> {
+class IMap : private gw::crtp<IMap, Derived> {
  public:
-  auto GetRoad(RoadId identifier) noexcept -> decltype(auto) { return this->Self().GetRoad(identifier); }
+  auto GetRoad(RoadId identifier) noexcept -> decltype(auto) { return this->self().GetRoad(identifier); }
 
   [[nodiscard]] auto GetRoad(RoadId identifier) const noexcept -> decltype(auto) {
-    return this->Self().GetRoad(identifier);
+    return this->self().GetRoad(identifier);
   }
 
-  auto AddRoadFront() noexcept -> decltype(auto) { return this->Self().AddRoadFront(); }
+  auto AddRoadFront() noexcept -> decltype(auto) { return this->self().AddRoadFront(); }
 
-  auto AddRoadBack() noexcept -> decltype(auto) { return this->Self().AddRoadBack(); }
+  auto AddRoadBack() noexcept -> decltype(auto) { return this->self().AddRoadBack(); }
 };
 
 }  // namespace gw::cpp_interface_techniques::crtp

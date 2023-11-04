@@ -9,28 +9,28 @@
 
 namespace gw::cpp_interface_techniques::crtp {
 
-using LaneId = gw::StrongType<size_t, struct LaneIdTag>;
+using LaneId = gw::strong_type<size_t, struct LaneIdTag>;
 
 template <typename Derived>
-class IRoad : private gw::Crtp<IRoad, Derived> {
+class IRoad : private gw::crtp<IRoad, Derived> {
  public:
-  auto GetLane(LaneId identifier) noexcept -> decltype(auto) { return this->Self().GetLane(identifier); }
+  auto GetLane(LaneId identifier) noexcept -> decltype(auto) { return this->self().GetLane(identifier); }
 
   [[nodiscard]] auto GetLane(LaneId identifier) const noexcept -> decltype(auto) {
-    return this->Self().GetLane(identifier);
+    return this->self().GetLane(identifier);
   }
 
-  auto AddLaneLeft() noexcept -> decltype(auto) { return this->Self().AddLaneLeft(); }
+  auto AddLaneLeft() noexcept -> decltype(auto) { return this->self().AddLaneLeft(); }
 
-  auto AddLaneRight() noexcept -> decltype(auto) { return this->Self().AddLaneRight(); }
+  auto AddLaneRight() noexcept -> decltype(auto) { return this->self().AddLaneRight(); }
 
-  auto GetNextRoad() noexcept -> Derived& { return this->Self().GetNextRoad(); }
+  auto GetNextRoad() noexcept -> Derived& { return this->self().GetNextRoad(); }
 
-  [[nodiscard]] auto GetNextRoad() const noexcept -> const Derived& { return this->Self().GetNextRoad(); }
+  [[nodiscard]] auto GetNextRoad() const noexcept -> const Derived& { return this->self().GetNextRoad(); }
 
-  auto GetPreviousRoad() noexcept -> Derived& { return this->Self().GetPreviousRoad(); }
+  auto GetPreviousRoad() noexcept -> Derived& { return this->self().GetPreviousRoad(); }
 
-  [[nodiscard]] auto GetPreviousRoad() const noexcept -> const Derived& { return this->Self().GetPreviousRoad(); }
+  [[nodiscard]] auto GetPreviousRoad() const noexcept -> const Derived& { return this->self().GetPreviousRoad(); }
 };
 
 }  // namespace gw::cpp_interface_techniques::crtp
