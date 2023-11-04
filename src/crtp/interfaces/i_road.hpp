@@ -9,7 +9,7 @@
 
 namespace gw::cpp_interface_techniques::crtp {
 
-using LaneId = gw::strong_type<size_t, struct LaneIdTag>;
+using LaneId = gw::strong_type<struct LaneIdTag, size_t>;
 
 template <typename Derived>
 class IRoad : private gw::crtp<IRoad, Derived> {

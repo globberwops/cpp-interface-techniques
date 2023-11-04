@@ -9,7 +9,7 @@
 
 namespace gw::cpp_interface_techniques::crtp {
 
-using RoadId = gw::strong_type<size_t, struct RoadIdTag>;
+using RoadId = gw::strong_type<struct RoadIdTag, size_t>;
 
 template <typename Derived>
 class IMap : private gw::crtp<IMap, Derived> {
