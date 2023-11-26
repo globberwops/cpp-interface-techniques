@@ -9,14 +9,17 @@
 #include "exceptions_map/map.hpp"
 #include "exceptions_map/road.hpp"
 
+using gw::cpp_interface_techniques::exceptions_map::Map;
+using gw::cpp_interface_techniques::exceptions_map::MapFactory;
+
 class ExceptionsMapTest : public testing::Test {
  protected:
-  void SetUp() override { map_ = gw::cpp_interface_techniques::exceptions_map::MapFactory::Create(); }
+  void SetUp() override { map_ = MapFactory::Create(); }
 
-  auto GetMap() -> gw::cpp_interface_techniques::exceptions_map::Map& { return map_; }
+  auto GetMap() -> Map& { return map_; }
 
  private:
-  gw::cpp_interface_techniques::exceptions_map::Map map_{};
+  Map map_{};
 };
 
 TEST_F(ExceptionsMapTest, RoadPredecessorsAndSuccessors) {
@@ -29,59 +32,25 @@ TEST_F(ExceptionsMapTest, RoadPredecessorsAndSuccessors) {
 }
 
 TEST_F(ExceptionsMapTest, LaneNeighbors) {
-  ASSERT_EQ(GetMap().GetRoad(0U).get().GetLane(0U).get().GetRightLane().get(),
-            GetMap().GetRoad(0U).get().GetLane(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(0U).get().GetLane(1U).get().GetRightLane().get(),
-            GetMap().GetRoad(0U).get().GetLane(2U).get());
-  ASSERT_EQ(GetMap().GetRoad(0U).get().GetLane(2U).get().GetLeftLane().get(),
-            GetMap().GetRoad(0U).get().GetLane(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(0U).get().GetLane(1U).get().GetLeftLane().get(),
-            GetMap().GetRoad(0U).get().GetLane(0U).get());
+  for (auto i = 0U; i <= 2; ++i) {
+    auto& road = GetMap().GetRoad(i).get();
 
-  ASSERT_EQ(GetMap().GetRoad(1U).get().GetLane(0U).get().GetRightLane().get(),
-            GetMap().GetRoad(1U).get().GetLane(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(1U).get().GetLane(1U).get().GetRightLane().get(),
-            GetMap().GetRoad(1U).get().GetLane(2U).get());
-  ASSERT_EQ(GetMap().GetRoad(1U).get().GetLane(2U).get().GetLeftLane().get(),
-            GetMap().GetRoad(1U).get().GetLane(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(1U).get().GetLane(1U).get().GetLeftLane().get(),
-            GetMap().GetRoad(1U).get().GetLane(0U).get());
-
-  ASSERT_EQ(GetMap().GetRoad(2U).get().GetLane(0U).get().GetRightLane().get(),
-            GetMap().GetRoad(2U).get().GetLane(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(2U).get().GetLane(1U).get().GetRightLane().get(),
-            GetMap().GetRoad(2U).get().GetLane(2U).get());
-  ASSERT_EQ(GetMap().GetRoad(2U).get().GetLane(2U).get().GetLeftLane().get(),
-            GetMap().GetRoad(2U).get().GetLane(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(2U).get().GetLane(1U).get().GetLeftLane().get(),
-            GetMap().GetRoad(2U).get().GetLane(0U).get());
+    ASSERT_EQ(road.GetLane(0U).get().GetRightLane().get(), road.GetLane(1U).get());
+    ASSERT_EQ(road.GetLane(1U).get().GetRightLane().get(), road.GetLane(2U).get());
+    ASSERT_EQ(road.GetLane(2U).get().GetLeftLane().get(), road.GetLane(1U).get());
+    ASSERT_EQ(road.GetLane(1U).get().GetLeftLane().get(), road.GetLane(0U).get());
+  }
 }
 
 TEST_F(ExceptionsMapTest, LaneLengthAndWidth) {
-  const auto& kLaneLength = gw::cpp_interface_techniques::exceptions_map::MapFactory::kLaneLength;
-  const auto& kLaneWidth = gw::cpp_interface_techniques::exceptions_map::MapFactory::kLaneWidth;
+  for (auto i = 0U; i <= 2; ++i) {
+    auto road = GetMap().GetRoad(i);
 
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(0U).get().GetLane(0U).get().GetLength(), kLaneLength);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(0U).get().GetLane(1U).get().GetLength(), kLaneLength);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(0U).get().GetLane(2U).get().GetLength(), kLaneLength);
+    for (auto j = 0U; j <= 2; ++j) {
+      auto lane = road.get().GetLane(j);
 
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(1U).get().GetLane(0U).get().GetLength(), kLaneLength);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(1U).get().GetLane(1U).get().GetLength(), kLaneLength);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(1U).get().GetLane(2U).get().GetLength(), kLaneLength);
-
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(2U).get().GetLane(0U).get().GetLength(), kLaneLength);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(2U).get().GetLane(1U).get().GetLength(), kLaneLength);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(2U).get().GetLane(2U).get().GetLength(), kLaneLength);
-
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(0U).get().GetLane(0U).get().GetWidth(), kLaneWidth);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(0U).get().GetLane(1U).get().GetWidth(), kLaneWidth);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(0U).get().GetLane(2U).get().GetWidth(), kLaneWidth);
-
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(1U).get().GetLane(0U).get().GetWidth(), kLaneWidth);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(1U).get().GetLane(1U).get().GetWidth(), kLaneWidth);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(1U).get().GetLane(2U).get().GetWidth(), kLaneWidth);
-
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(2U).get().GetLane(0U).get().GetWidth(), kLaneWidth);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(2U).get().GetLane(1U).get().GetWidth(), kLaneWidth);
-  ASSERT_DOUBLE_EQ(GetMap().GetRoad(2U).get().GetLane(2U).get().GetWidth(), kLaneWidth);
+      ASSERT_DOUBLE_EQ(lane.get().GetLength(), MapFactory::kLaneLength);
+      ASSERT_DOUBLE_EQ(lane.get().GetWidth(), MapFactory::kLaneWidth);
+    }
+  }
 }

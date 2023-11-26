@@ -51,6 +51,10 @@ class Map {
     return road;
   }
 
+  auto operator==(const Map& other) const noexcept -> bool { return &other == this; }
+
+  auto operator!=(const Map& other) const noexcept -> bool { return &other != this; }
+
  private:
   std::deque<Road> roads_;
 };

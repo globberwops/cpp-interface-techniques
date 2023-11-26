@@ -8,7 +8,7 @@
 namespace gw::cpp_interface_techniques::crtp {
 
 template <typename Derived>
-class ILane : private gw::crtp<ILane, Derived> {
+class ILane : public gw::crtp<ILane, Derived> {
  public:
   [[nodiscard]] auto GetLength() const noexcept -> double { return this->self().GetLength(); }
 

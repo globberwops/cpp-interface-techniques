@@ -55,6 +55,10 @@ class LaneAdapter : public ILane<LaneAdapter> {
     }
   }
 
+  inline auto operator==(const LaneAdapter& rhs) const noexcept -> bool { return lane_.get() == rhs.lane_.get(); }
+
+  inline auto operator!=(const LaneAdapter& rhs) const noexcept -> bool { return !(*this == rhs); }
+
  private:
   std::reference_wrapper<gw::cpp_interface_techniques::exceptions_map::Lane> lane_;
 };

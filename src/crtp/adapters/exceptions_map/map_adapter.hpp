@@ -36,6 +36,10 @@ class MapAdapter : public IMap<MapAdapter> {
 
   auto AddRoadBack() noexcept -> RoadAdapter { return RoadAdapter{map_.get().AddRoadBack()}; }
 
+  inline auto operator==(const MapAdapter& rhs) const noexcept -> bool { return map_.get() == rhs.map_.get(); }
+
+  inline auto operator!=(const MapAdapter& rhs) const noexcept -> bool { return !(*this == rhs); }
+
  private:
   std::reference_wrapper<gw::cpp_interface_techniques::exceptions_map::Map> map_;
 };

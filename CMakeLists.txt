@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.24)
 
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-include(CompilerWarnings)
 
 project(CppInterfaceTechniques CXX)
+
+include(FetchDeps)
+include(CompilerWarnings)
 
 option(CPP_INTERFACE_TECHNIQUES_BUILD_BENCHMARKS "Build benchmarks" ${PROJECT_IS_TOP_LEVEL})
 option(CPP_INTERFACE_TECHNIQUES_BUILD_DOCS "Build documentation" ${PROJECT_IS_TOP_LEVEL})
@@ -21,6 +23,7 @@ if(CPP_INTERFACE_TECHNIQUES_BUILD_DOCS)
 endif()
 
 if(CPP_INTERFACE_TECHNIQUES_BUILD_TESTS)
+  include(CTest)
   enable_testing()
   add_subdirectory(tests)
 endif()

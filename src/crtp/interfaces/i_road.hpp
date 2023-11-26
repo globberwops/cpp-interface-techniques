@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <cstddef>             // for std::size_t
 #include <gw/crtp.hpp>         // for gw::Crtp
 #include <gw/strong_type.hpp>  // for gw::StrongType
 
@@ -12,7 +11,7 @@ namespace gw::cpp_interface_techniques::crtp {
 using LaneId = gw::strong_type<struct LaneIdTag, size_t>;
 
 template <typename Derived>
-class IRoad : private gw::crtp<IRoad, Derived> {
+class IRoad : public gw::crtp<IRoad, Derived> {
  public:
   auto GetLane(LaneId identifier) noexcept -> decltype(auto) { return this->self().GetLane(identifier); }
 

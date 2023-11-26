@@ -68,6 +68,10 @@ class RoadAdapter : public IRoad<RoadAdapter> {
     return std::nullopt;
   }
 
+  inline auto operator==(const RoadAdapter& rhs) const noexcept -> bool { return road_.get() == rhs.road_.get(); }
+
+  inline auto operator!=(const RoadAdapter& rhs) const noexcept -> bool { return !(*this == rhs); }
+
  private:
   std::reference_wrapper<gw::cpp_interface_techniques::optional_map::Road> road_;
 };

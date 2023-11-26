@@ -9,14 +9,17 @@
 #include "optional_map/map.hpp"
 #include "optional_map/road.hpp"
 
+using gw::cpp_interface_techniques::optional_map::Map;
+using gw::cpp_interface_techniques::optional_map::MapFactory;
+
 class OptionalMapTest : public testing::Test {
  protected:
-  void SetUp() override { map_ = gw::cpp_interface_techniques::optional_map::MapFactory::Create(); }
+  void SetUp() override { map_ = MapFactory::Create(); }
 
-  auto GetMap() -> gw::cpp_interface_techniques::optional_map::Map& { return map_; }
+  auto GetMap() -> Map& { return map_; }
 
  private:
-  gw::cpp_interface_techniques::optional_map::Map map_{};
+  Map map_{};
 };
 
 TEST_F(OptionalMapTest, RoadPredecessorsAndSuccessors) {
@@ -38,19 +41,16 @@ TEST_F(OptionalMapTest, LaneNeighbors) {
 }
 
 TEST_F(OptionalMapTest, LaneLengthAndWidth) {
-  const auto& kLaneLength = gw::cpp_interface_techniques::optional_map::MapFactory::kLaneLength;
-  const auto& kLaneWidth = gw::cpp_interface_techniques::optional_map::MapFactory::kLaneWidth;
-
   for (auto i = 0U; i <= 2; ++i) {
-    ASSERT_TRUE(GetMap().GetRoad(i));
-    auto& road = GetMap().GetRoad(i)->get();
+    auto road = GetMap().GetRoad(i);
+    ASSERT_TRUE(road);
 
     for (auto j = 0U; j <= 2; ++j) {
-      ASSERT_TRUE(road.GetLane(j));
-      auto& lane = road.GetLane(j)->get();
+      auto lane = road->get().GetLane(j);
+      ASSERT_TRUE(lane);
 
-      ASSERT_DOUBLE_EQ(lane.GetLength(), kLaneLength);
-      ASSERT_DOUBLE_EQ(lane.GetWidth(), kLaneWidth);
+      ASSERT_DOUBLE_EQ(lane->get().GetLength(), MapFactory::kLaneLength);
+      ASSERT_DOUBLE_EQ(lane->get().GetWidth(), MapFactory::kLaneWidth);
     }
   }
 }

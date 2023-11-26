@@ -3,14 +3,23 @@
 
 #include <benchmark/benchmark.h>
 
-#include "optional_map/map.hpp"
+#include <string>
 
-static void BM_MapCreation(benchmark::State& state) {
+static void BM_StringCreation(benchmark::State& state) {
   for (auto _ : state) {
-    gw::cpp_interface_techniques::optional_map::Map map;
+    std::string empty_string;
   }
 }
+// Register the function as a benchmark
+BENCHMARK(BM_StringCreation);
 
-BENCHMARK(BM_MapCreation);  // NOLINT
+// Define another benchmark
+static void BM_StringCopy(benchmark::State& state) {
+  std::string x = "hello";
+  for (auto _ : state) {
+    std::string copy(x);
+  }
+}
+BENCHMARK(BM_StringCopy);
 
-BENCHMARK_MAIN();  // NOLINT
+BENCHMARK_MAIN();
