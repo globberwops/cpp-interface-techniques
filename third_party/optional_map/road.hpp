@@ -14,24 +14,24 @@ namespace gw::cpp_interface_techniques::optional_map {
 class Road {
  public:
   auto GetLane(size_t index) noexcept -> std::optional<std::reference_wrapper<Lane>> {
-    if (index >= lanes_.size()) {
+    if (index >= std::size(lanes_)) {
       return std::nullopt;
     }
     return lanes_[index];
   }
 
   [[nodiscard]] auto GetLane(size_t index) const noexcept -> std::optional<std::reference_wrapper<const Lane>> {
-    if (index >= lanes_.size()) {
+    if (index >= std::size(lanes_)) {
       return std::nullopt;
     }
     return lanes_[index];
   }
 
   auto AddLaneLeft() noexcept -> std::reference_wrapper<Lane> {
-    auto& lane = lanes_.emplace_front();
+    decltype(auto) lane = lanes_.emplace_front();
 
-    if (lanes_.size() > 1U) {
-      auto& right_lane = lanes_.at(1U);
+    if (std::size(lanes_) > 1U) {
+      decltype(auto) right_lane = lanes_.at(1U);
       lane.SetRightLane(right_lane);
       right_lane.SetLeftLane(lane);
     }
@@ -40,10 +40,10 @@ class Road {
   }
 
   auto AddLaneRight() noexcept -> std::reference_wrapper<Lane> {
-    auto& lane = lanes_.emplace_back();
+    decltype(auto) lane = lanes_.emplace_back();
 
-    if (lanes_.size() > 1U) {
-      auto& left_lane = lanes_.at(lanes_.size() - 2U);
+    if (std::size(lanes_) > 1U) {
+      decltype(auto) left_lane = lanes_.at(std::size(lanes_) - 2U);
       lane.SetLeftLane(left_lane);
       left_lane.SetRightLane(lane);
     }

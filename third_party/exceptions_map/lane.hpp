@@ -11,27 +11,27 @@ namespace gw::cpp_interface_techniques::exceptions_map {
 
 class Lane {
  public:
-  [[nodiscard]] auto GetLength() const -> double { return length_; }
+  [[nodiscard]] auto GetLength() const { return length_; }
 
   void SetLength(double length) { length_ = length; }
 
-  [[nodiscard]] auto GetWidth() const -> double { return width_; }
+  [[nodiscard]] auto GetWidth() const { return width_; }
 
   void SetWidth(double width) { width_ = width; }
 
-  [[nodiscard]] auto GetLeftLane() -> Lane& {
+  [[nodiscard]] auto GetLeftLane() -> decltype(auto) {
     return left_lane_.has_value() ? left_lane_.value().get() : throw std::runtime_error("No left lane");
   }
 
-  [[nodiscard]] auto GetLeftLane() const -> const Lane& {
+  [[nodiscard]] auto GetLeftLane() const -> decltype(auto) {
     return left_lane_.has_value() ? left_lane_.value().get() : throw std::runtime_error("No left lane");
   }
 
-  [[nodiscard]] auto GetRightLane() -> Lane& {
+  [[nodiscard]] auto GetRightLane() -> decltype(auto) {
     return right_lane_.has_value() ? right_lane_.value().get() : throw std::runtime_error("No right lane");
   }
 
-  [[nodiscard]] auto GetRightLane() const -> const Lane& {
+  [[nodiscard]] auto GetRightLane() const -> decltype(auto) {
     return right_lane_.has_value() ? right_lane_.value().get() : throw std::runtime_error("No right lane");
   }
 
