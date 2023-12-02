@@ -1,6 +1,6 @@
 add_executable(InheritanceTest)
 
-target_sources(InheritanceTest PRIVATE inheritance_exceptions_map_test.cpp inheritance_optional_map_test.cpp)
+target_sources(InheritanceTest PRIVATE inheritance_map_test.cpp)
 
 target_link_libraries(
   InheritanceTest PRIVATE GTest::gtest_main CppInterfaceTechniques::InheritanceAdaptersExceptionsMap
