@@ -34,9 +34,19 @@ class CrtpExceptionsMapTest : public testing::Test {
   T map_type_param_{};
 };
 
-TYPED_TEST_SUITE_P(CrtpExceptionsMapTest);
+using ExceptionsMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::exceptions_map::Map,
+                                            gw::cpp_interface_techniques::exceptions_map::MapFactory,
+                                            gw::cpp_interface_techniques::crtp::exceptions_map::MapAdapter>;
 
-TYPED_TEST_P(CrtpExceptionsMapTest, RoadPredecessorsAndSuccessors) {
+using OptionalMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::optional_map::Map,
+                                          gw::cpp_interface_techniques::optional_map::MapFactory,
+                                          gw::cpp_interface_techniques::crtp::optional_map::MapAdapter>;
+
+using MapTypeParams = ::testing::Types<ExceptionsMapTypeParam, OptionalMapTypeParam>;
+
+TYPED_TEST_SUITE(CrtpExceptionsMapTest, MapTypeParams);
+
+TYPED_TEST(CrtpExceptionsMapTest, RoadPredecessorsAndSuccessors) {
   decltype(auto) map = this->GetMap();
 
   auto road = map.GetRoad(RoadId{0U});
@@ -53,7 +63,7 @@ TYPED_TEST_P(CrtpExceptionsMapTest, RoadPredecessorsAndSuccessors) {
   ASSERT_EQ(road->GetPreviousRoad(), map.GetRoad(RoadId{1U}));
 }
 
-TYPED_TEST_P(CrtpExceptionsMapTest, LaneNeighbors) {
+TYPED_TEST(CrtpExceptionsMapTest, LaneNeighbors) {
   decltype(auto) map = this->GetMap();
 
   for (auto i = 0U; i <= 2; ++i) {
@@ -75,7 +85,7 @@ TYPED_TEST_P(CrtpExceptionsMapTest, LaneNeighbors) {
   }
 }
 
-TYPED_TEST_P(CrtpExceptionsMapTest, LaneLengthAndWidth) {
+TYPED_TEST(CrtpExceptionsMapTest, LaneLengthAndWidth) {
   decltype(auto) map = this->GetMap();
 
   for (auto i = 0U; i <= 2; ++i) {
@@ -91,16 +101,3 @@ TYPED_TEST_P(CrtpExceptionsMapTest, LaneLengthAndWidth) {
     }
   }
 }
-
-REGISTER_TYPED_TEST_SUITE_P(CrtpExceptionsMapTest, RoadPredecessorsAndSuccessors, LaneNeighbors, LaneLengthAndWidth);
-
-using ExceptionsMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::exceptions_map::Map,
-                                            gw::cpp_interface_techniques::exceptions_map::MapFactory,
-                                            gw::cpp_interface_techniques::crtp::exceptions_map::MapAdapter>;
-
-using OptionalMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::optional_map::Map,
-                                          gw::cpp_interface_techniques::optional_map::MapFactory,
-                                          gw::cpp_interface_techniques::crtp::optional_map::MapAdapter>;
-
-using MapTypeParams = ::testing::Types<ExceptionsMapTypeParam, OptionalMapTypeParam>;
-INSTANTIATE_TYPED_TEST_SUITE_P(Crtp, CrtpExceptionsMapTest, MapTypeParams);

@@ -34,9 +34,19 @@ class InheritanceMapTest : public testing::Test {
   T map_type_param_{};
 };
 
-TYPED_TEST_SUITE_P(InheritanceMapTest);
+using ExceptionsMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::exceptions_map::Map,
+                                            gw::cpp_interface_techniques::exceptions_map::MapFactory,
+                                            gw::cpp_interface_techniques::inheritance::exceptions_map::MapAdapter>;
 
-TYPED_TEST_P(InheritanceMapTest, RoadPredecessorsAndSuccessors) {
+using OptionalMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::optional_map::Map,
+                                          gw::cpp_interface_techniques::optional_map::MapFactory,
+                                          gw::cpp_interface_techniques::inheritance::optional_map::MapAdapter>;
+
+using MapTypeParams = ::testing::Types<ExceptionsMapTypeParam, OptionalMapTypeParam>;
+
+TYPED_TEST_SUITE(InheritanceMapTest, MapTypeParams);
+
+TYPED_TEST(InheritanceMapTest, RoadPredecessorsAndSuccessors) {
   decltype(auto) map = this->GetMap();
 
   auto road = map.GetRoad(RoadId{0U});
@@ -53,7 +63,7 @@ TYPED_TEST_P(InheritanceMapTest, RoadPredecessorsAndSuccessors) {
   ASSERT_EQ(road->GetPreviousRoad(), map.GetRoad(RoadId{1U}));
 }
 
-TYPED_TEST_P(InheritanceMapTest, LaneNeighbors) {
+TYPED_TEST(InheritanceMapTest, LaneNeighbors) {
   decltype(auto) map = this->GetMap();
 
   for (auto i = 0U; i <= 2; ++i) {
@@ -75,7 +85,7 @@ TYPED_TEST_P(InheritanceMapTest, LaneNeighbors) {
   }
 }
 
-TYPED_TEST_P(InheritanceMapTest, LaneLengthAndWidth) {
+TYPED_TEST(InheritanceMapTest, LaneLengthAndWidth) {
   decltype(auto) map = this->GetMap();
 
   for (auto i = 0U; i <= 2; ++i) {
@@ -91,16 +101,3 @@ TYPED_TEST_P(InheritanceMapTest, LaneLengthAndWidth) {
     }
   }
 }
-
-REGISTER_TYPED_TEST_SUITE_P(InheritanceMapTest, RoadPredecessorsAndSuccessors, LaneNeighbors, LaneLengthAndWidth);
-
-using ExceptionsMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::exceptions_map::Map,
-                                            gw::cpp_interface_techniques::exceptions_map::MapFactory,
-                                            gw::cpp_interface_techniques::inheritance::exceptions_map::MapAdapter>;
-
-using OptionalMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::optional_map::Map,
-                                          gw::cpp_interface_techniques::optional_map::MapFactory,
-                                          gw::cpp_interface_techniques::inheritance::optional_map::MapAdapter>;
-
-using MapTypeParams = ::testing::Types<ExceptionsMapTypeParam, OptionalMapTypeParam>;
-INSTANTIATE_TYPED_TEST_SUITE_P(Inheritance, InheritanceMapTest, MapTypeParams);
