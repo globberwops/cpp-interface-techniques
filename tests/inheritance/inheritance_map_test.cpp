@@ -66,8 +66,8 @@ TYPED_TEST(InheritanceMapTest, RoadPredecessorsAndSuccessors) {
 TYPED_TEST(InheritanceMapTest, LaneNeighbors) {
   decltype(auto) map = this->GetMap();
 
-  for (auto i = 0U; i <= 2; ++i) {
-    auto road = map.GetRoad(RoadId{i});
+  for (auto road_id = RoadId{0U}; road_id <= RoadId{2U}; ++road_id) {
+    auto road = map.GetRoad(road_id);
     ASSERT_TRUE(road);
 
     auto lane = road->GetLane(LaneId{0U});
@@ -88,12 +88,12 @@ TYPED_TEST(InheritanceMapTest, LaneNeighbors) {
 TYPED_TEST(InheritanceMapTest, LaneLengthAndWidth) {
   decltype(auto) map = this->GetMap();
 
-  for (auto i = 0U; i <= 2; ++i) {
-    auto road = map.GetRoad(RoadId{i});
+  for (auto road_id = RoadId{0U}; road_id <= RoadId{2U}; ++road_id) {
+    auto road = map.GetRoad(road_id);
     ASSERT_TRUE(road);
 
-    for (auto j = 0U; j <= 2; ++j) {
-      auto lane = road->GetLane(LaneId{j});
+    for (auto lane_id = LaneId{0U}; lane_id <= LaneId{2U}; ++lane_id) {
+      auto lane = road->GetLane(lane_id);
       ASSERT_TRUE(lane);
 
       ASSERT_DOUBLE_EQ(lane->GetLength(), TypeParam::MapFactoryType::kLaneLength);
