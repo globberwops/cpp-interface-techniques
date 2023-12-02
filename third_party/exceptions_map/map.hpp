@@ -11,11 +11,11 @@ namespace gw::cpp_interface_techniques::exceptions_map {
 
 class Map {
  public:
-  auto GetRoad(size_t index) -> std::reference_wrapper<Road> { return roads_.at(index); }
+  auto GetRoad(size_t index) -> Road& { return roads_.at(index); }
 
-  [[nodiscard]] auto GetRoad(size_t index) const -> std::reference_wrapper<const Road> { return roads_.at(index); }
+  [[nodiscard]] auto GetRoad(size_t index) const -> const Road& { return roads_.at(index); }
 
-  auto AddRoadFront() noexcept -> std::reference_wrapper<Road> {
+  auto AddRoadFront() noexcept -> Road& {
     auto& road = roads_.emplace_front();
 
     if (roads_.size() > 1U) {
@@ -27,7 +27,7 @@ class Map {
     return road;
   }
 
-  auto AddRoadBack() noexcept -> std::reference_wrapper<Road> {
+  auto AddRoadBack() noexcept -> Road& {
     auto& road = roads_.emplace_back();
 
     if (roads_.size() > 1U) {
@@ -58,9 +58,9 @@ struct MapFactory {
       auto road = map.AddRoadBack();
 
       for (auto j = 0U; j <= 2; ++j) {
-        auto lane = road.get().AddLaneRight();
-        lane.get().SetLength(kLaneLength);
-        lane.get().SetWidth(kLaneWidth);
+        auto lane = road.AddLaneRight();
+        lane.SetLength(kLaneLength);
+        lane.SetWidth(kLaneWidth);
       }
     }
 

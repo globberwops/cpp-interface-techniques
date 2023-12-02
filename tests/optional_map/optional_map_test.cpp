@@ -23,20 +23,39 @@ class OptionalMapTest : public testing::Test {
 };
 
 TEST_F(OptionalMapTest, RoadPredecessorsAndSuccessors) {
-  ASSERT_EQ(GetMap().GetRoad(0U)->get().GetNextRoad()->get(), GetMap().GetRoad(1U)->get());
-  ASSERT_EQ(GetMap().GetRoad(1U)->get().GetNextRoad()->get(), GetMap().GetRoad(2U)->get());
-  ASSERT_EQ(GetMap().GetRoad(2U)->get().GetPreviousRoad()->get(), GetMap().GetRoad(1U)->get());
-  ASSERT_EQ(GetMap().GetRoad(1U)->get().GetPreviousRoad()->get(), GetMap().GetRoad(0U)->get());
+  auto road = GetMap().GetRoad(0U);
+  ASSERT_TRUE(road);
+  ASSERT_EQ(road->get().GetNextRoad()->get(), GetMap().GetRoad(1U)->get());
+
+  road = GetMap().GetRoad(1U);
+  ASSERT_TRUE(road);
+  ASSERT_EQ(road->get().GetNextRoad()->get(), GetMap().GetRoad(2U)->get());
+  ASSERT_EQ(road->get().GetPreviousRoad()->get(), GetMap().GetRoad(0U)->get());
+
+  road = GetMap().GetRoad(2U);
+  ASSERT_TRUE(road);
+  ASSERT_EQ(road->get().GetPreviousRoad()->get(), GetMap().GetRoad(1U)->get());
+
+  ASSERT_FALSE(GetMap().GetRoad(3U));
 }
 
 TEST_F(OptionalMapTest, LaneNeighbors) {
   for (auto i = 0U; i <= 2; ++i) {
-    auto& road = GetMap().GetRoad(i)->get();
+    auto road = GetMap().GetRoad(i);
+    ASSERT_TRUE(road);
 
-    ASSERT_EQ(road.GetLane(0U)->get().GetRightLane()->get(), road.GetLane(1U)->get());
-    ASSERT_EQ(road.GetLane(1U)->get().GetRightLane()->get(), road.GetLane(2U)->get());
-    ASSERT_EQ(road.GetLane(2U)->get().GetLeftLane()->get(), road.GetLane(1U)->get());
-    ASSERT_EQ(road.GetLane(1U)->get().GetLeftLane()->get(), road.GetLane(0U)->get());
+    auto lane = road->get().GetLane(0U);
+    ASSERT_TRUE(lane);
+    ASSERT_EQ(lane->get().GetRightLane()->get(), road->get().GetLane(1U)->get());
+
+    lane = road->get().GetLane(1U);
+    ASSERT_TRUE(lane);
+    ASSERT_EQ(lane->get().GetRightLane()->get(), road->get().GetLane(2U)->get());
+    ASSERT_EQ(lane->get().GetLeftLane()->get(), road->get().GetLane(0U)->get());
+
+    lane = road->get().GetLane(2U);
+    ASSERT_TRUE(lane);
+    ASSERT_EQ(lane->get().GetLeftLane()->get(), road->get().GetLane(1U)->get());
   }
 }
 

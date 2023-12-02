@@ -14,11 +14,11 @@ namespace gw::cpp_interface_techniques::exceptions_map {
 
 class Road {
  public:
-  auto GetLane(size_t index) -> std::reference_wrapper<Lane> { return lanes_.at(index); }
+  auto GetLane(size_t index) -> Lane& { return lanes_.at(index); }
 
-  [[nodiscard]] auto GetLane(size_t index) const -> std::reference_wrapper<const Lane> { return lanes_.at(index); }
+  [[nodiscard]] auto GetLane(size_t index) const -> const Lane& { return lanes_.at(index); }
 
-  auto AddLaneLeft() noexcept -> std::reference_wrapper<Lane> {
+  auto AddLaneLeft() noexcept -> Lane& {
     auto& lane = lanes_.emplace_front();
 
     if (lanes_.size() > 1U) {
@@ -30,7 +30,7 @@ class Road {
     return lane;
   }
 
-  auto AddLaneRight() noexcept -> std::reference_wrapper<Lane> {
+  auto AddLaneRight() noexcept -> Lane& {
     auto& lane = lanes_.emplace_back();
 
     if (lanes_.size() > 1U) {
@@ -42,19 +42,19 @@ class Road {
     return lane;
   }
 
-  [[nodiscard]] auto GetNextRoad() -> std::reference_wrapper<Road> {
+  [[nodiscard]] auto GetNextRoad() -> Road& {
     return next_road_.has_value() ? next_road_.value().get() : throw std::runtime_error("No next road");
   }
 
-  [[nodiscard]] auto GetNextRoad() const -> std::reference_wrapper<const Road> {
+  [[nodiscard]] auto GetNextRoad() const -> const Road& {
     return next_road_.has_value() ? next_road_.value().get() : throw std::runtime_error("No next road");
   }
 
-  [[nodiscard]] auto GetPreviousRoad() -> std::reference_wrapper<Road> {
+  [[nodiscard]] auto GetPreviousRoad() -> Road& {
     return previous_road_.has_value() ? previous_road_.value().get() : throw std::runtime_error("No previous road");
   }
 
-  [[nodiscard]] auto GetPreviousRoad() const -> std::reference_wrapper<const Road> {
+  [[nodiscard]] auto GetPreviousRoad() const -> const Road& {
     return previous_road_.has_value() ? previous_road_.value().get() : throw std::runtime_error("No previous road");
   }
 

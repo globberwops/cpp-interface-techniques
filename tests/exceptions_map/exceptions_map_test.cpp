@@ -23,34 +23,44 @@ class ExceptionsMapTest : public testing::Test {
 };
 
 TEST_F(ExceptionsMapTest, RoadPredecessorsAndSuccessors) {
-  ASSERT_EQ(GetMap().GetRoad(0U).get().GetNextRoad().get(), GetMap().GetRoad(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(1U).get().GetNextRoad().get(), GetMap().GetRoad(2U).get());
-  ASSERT_EQ(GetMap().GetRoad(2U).get().GetPreviousRoad().get(), GetMap().GetRoad(1U).get());
-  ASSERT_EQ(GetMap().GetRoad(1U).get().GetPreviousRoad().get(), GetMap().GetRoad(0U).get());
+  auto& road = GetMap().GetRoad(0U);
+  ASSERT_EQ(road.GetNextRoad(), GetMap().GetRoad(1U));
+
+  road = GetMap().GetRoad(1U);
+  ASSERT_EQ(road.GetNextRoad(), GetMap().GetRoad(2U));
+  ASSERT_EQ(road.GetPreviousRoad(), GetMap().GetRoad(0U));
+
+  road = GetMap().GetRoad(2U);
+  ASSERT_EQ(road.GetPreviousRoad(), GetMap().GetRoad(1U));
 
   ASSERT_THROW(GetMap().GetRoad(3U), std::out_of_range);
 }
 
 TEST_F(ExceptionsMapTest, LaneNeighbors) {
   for (auto i = 0U; i <= 2; ++i) {
-    auto& road = GetMap().GetRoad(i).get();
+    auto& road = GetMap().GetRoad(i);
 
-    ASSERT_EQ(road.GetLane(0U).get().GetRightLane().get(), road.GetLane(1U).get());
-    ASSERT_EQ(road.GetLane(1U).get().GetRightLane().get(), road.GetLane(2U).get());
-    ASSERT_EQ(road.GetLane(2U).get().GetLeftLane().get(), road.GetLane(1U).get());
-    ASSERT_EQ(road.GetLane(1U).get().GetLeftLane().get(), road.GetLane(0U).get());
+    auto& lane = road.GetLane(0U);
+    ASSERT_EQ(lane.GetRightLane(), road.GetLane(1U));
+
+    lane = road.GetLane(1U);
+    ASSERT_EQ(lane.GetRightLane(), road.GetLane(2U));
+    ASSERT_EQ(lane.GetLeftLane(), road.GetLane(0U));
+
+    lane = road.GetLane(2U);
+    ASSERT_EQ(lane.GetLeftLane(), road.GetLane(1U));
   }
 }
 
 TEST_F(ExceptionsMapTest, LaneLengthAndWidth) {
   for (auto i = 0U; i <= 2; ++i) {
-    auto road = GetMap().GetRoad(i);
+    auto& road = GetMap().GetRoad(i);
 
     for (auto j = 0U; j <= 2; ++j) {
-      auto lane = road.get().GetLane(j);
+      auto& lane = road.GetLane(j);
 
-      ASSERT_DOUBLE_EQ(lane.get().GetLength(), MapFactory::kLaneLength);
-      ASSERT_DOUBLE_EQ(lane.get().GetWidth(), MapFactory::kLaneWidth);
+      ASSERT_DOUBLE_EQ(lane.GetLength(), MapFactory::kLaneLength);
+      ASSERT_DOUBLE_EQ(lane.GetWidth(), MapFactory::kLaneWidth);
     }
   }
 }
