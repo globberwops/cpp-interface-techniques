@@ -6,14 +6,14 @@
 #include <exceptions_map/map.hpp>
 #include <optional_map/map.hpp>
 
-#include "inheritance/adapters/exceptions_map/map_adapter.hpp"
-#include "inheritance/adapters/optional_map/map_adapter.hpp"
-#include "inheritance/interfaces/i_map.hpp"
-#include "inheritance/interfaces/i_road.hpp"
+#include "crtp/adapters/exceptions_map/map_adapter.hpp"
+#include "crtp/adapters/optional_map/map_adapter.hpp"
+#include "crtp/interfaces/i_map.hpp"
+#include "crtp/interfaces/i_road.hpp"
 
-using gw::cpp_interface_techniques::inheritance::IMap;
-using gw::cpp_interface_techniques::inheritance::LaneId;
-using gw::cpp_interface_techniques::inheritance::RoadId;
+using gw::cpp_interface_techniques::crtp::IMap;
+using gw::cpp_interface_techniques::crtp::LaneId;
+using gw::cpp_interface_techniques::crtp::RoadId;
 
 template <typename Map, typename MapFactory, typename MapAdapter>
 struct MapTypeParam {
@@ -26,9 +26,9 @@ struct MapTypeParam {
 };
 
 template <typename T>
-class InheritanceMapTest : public testing::Test {
+class CrtpTest : public testing::Test {
  protected:
-  auto GetMap() -> IMap& { return map_type_param_.map_adapter; }
+  auto GetMap() -> IMap<typename T::MapAdapterType>& { return map_type_param_.map_adapter; }
 
  private:
   T map_type_param_{};
@@ -36,17 +36,17 @@ class InheritanceMapTest : public testing::Test {
 
 using ExceptionsMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::exceptions_map::Map,
                                             gw::cpp_interface_techniques::exceptions_map::MapFactory,
-                                            gw::cpp_interface_techniques::inheritance::exceptions_map::MapAdapter>;
+                                            gw::cpp_interface_techniques::crtp::exceptions_map::MapAdapter>;
 
 using OptionalMapTypeParam = MapTypeParam<gw::cpp_interface_techniques::optional_map::Map,
                                           gw::cpp_interface_techniques::optional_map::MapFactory,
-                                          gw::cpp_interface_techniques::inheritance::optional_map::MapAdapter>;
+                                          gw::cpp_interface_techniques::crtp::optional_map::MapAdapter>;
 
 using MapTypeParams = ::testing::Types<ExceptionsMapTypeParam, OptionalMapTypeParam>;
 
-TYPED_TEST_SUITE(InheritanceMapTest, MapTypeParams);
+TYPED_TEST_SUITE(CrtpTest, MapTypeParams);
 
-TYPED_TEST(InheritanceMapTest, RoadPredecessorsAndSuccessors) {
+TYPED_TEST(CrtpTest, RoadPredecessorsAndSuccessors) {
   decltype(auto) map = this->GetMap();
 
   auto road = map.GetRoad(RoadId{0U});
@@ -63,7 +63,7 @@ TYPED_TEST(InheritanceMapTest, RoadPredecessorsAndSuccessors) {
   ASSERT_EQ(road->GetPreviousRoad(), map.GetRoad(RoadId{1U}));
 }
 
-TYPED_TEST(InheritanceMapTest, LaneNeighbors) {
+TYPED_TEST(CrtpTest, LaneNeighbors) {
   decltype(auto) map = this->GetMap();
 
   for (auto road_id = RoadId{0U}; road_id <= RoadId{2U}; ++road_id) {
@@ -85,7 +85,7 @@ TYPED_TEST(InheritanceMapTest, LaneNeighbors) {
   }
 }
 
-TYPED_TEST(InheritanceMapTest, LaneLengthAndWidth) {
+TYPED_TEST(CrtpTest, LaneLengthAndWidth) {
   decltype(auto) map = this->GetMap();
 
   for (auto road_id = RoadId{0U}; road_id <= RoadId{2U}; ++road_id) {
@@ -93,7 +93,7 @@ TYPED_TEST(InheritanceMapTest, LaneLengthAndWidth) {
     ASSERT_TRUE(road);
 
     for (auto lane_id = LaneId{0U}; lane_id <= LaneId{2U}; ++lane_id) {
-      auto lane = road->GetLane(lane_id);
+      auto lane = road->GetLane(LaneId{lane_id});
       ASSERT_TRUE(lane);
 
       ASSERT_DOUBLE_EQ(lane->GetLength(), TypeParam::MapFactoryType::kLaneLength);
