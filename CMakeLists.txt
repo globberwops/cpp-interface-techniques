@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.24)
 
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-project(CppInterfaceTechniques CXX)
+project(
+  CppInterfaceTechniques
+  VERSION 1.0.0
+  DESCRIPTION "A review of C++ Interface Techniques"
+  HOMEPAGE_URL "https://github.com/globberwops/cpp-interface-techniques"
+  LANGUAGES CXX)
 
 include(FetchDeps)
 include(CompilerWarnings)
@@ -23,7 +28,6 @@ if(CPP_INTERFACE_TECHNIQUES_BUILD_DOCS)
 endif()
 
 if(CPP_INTERFACE_TECHNIQUES_BUILD_TESTS)
-  include(CTest)
   enable_testing()
   add_subdirectory(tests)
 endif()
