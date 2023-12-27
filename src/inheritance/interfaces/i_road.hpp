@@ -3,14 +3,15 @@
 
 #pragma once
 
-#include <gw/strong_type.hpp>  // for gw::StrongType
+#include <cstddef>             // for std::size_t
+#include <gw/strong_type.hpp>  // for gw::strong_type
 #include <memory>              // for std::unique_ptr
 
 #include "inheritance/interfaces/i_lane.hpp"  // for gw::cpp_interface_techniques::inheritance::ILane
 
 namespace gw::cpp_interface_techniques::inheritance {
 
-using LaneId = gw::strong_type<struct LaneIdTag, size_t>;
+using LaneId = gw::strong_type<std::size_t, struct LaneIdTag>;
 
 class IRoad {
  public:

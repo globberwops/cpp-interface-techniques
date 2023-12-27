@@ -3,14 +3,15 @@
 
 #pragma once
 
-#include <gw/strong_type.hpp>  // for gw::StrongType
+#include <cstddef>             // for std::size_t
+#include <gw/strong_type.hpp>  // for gw::strong_type
 #include <memory>              // for std::unique_ptr
 
 #include "inheritance/interfaces/i_road.hpp"  // for gw::cpp_interface_techniques::inheritance::IRoad
 
 namespace gw::cpp_interface_techniques::inheritance {
 
-using RoadId = gw::strong_type<struct RoadIdTag, size_t>;
+using RoadId = gw::strong_type<std::size_t, struct RoadIdTag>;
 
 class IMap {
  public:

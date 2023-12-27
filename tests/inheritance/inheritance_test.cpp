@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 
+#include <concepts>
 #include <exceptions_map/map.hpp>
 #include <optional_map/map.hpp>
 
@@ -15,7 +16,7 @@ using gw::cpp_interface_techniques::inheritance::IMap;
 using gw::cpp_interface_techniques::inheritance::LaneId;
 using gw::cpp_interface_techniques::inheritance::RoadId;
 
-template <typename Map, typename MapFactory, typename MapAdapter>
+template <typename Map, typename MapFactory, std::derived_from<IMap> MapAdapter>
 struct MapTypeParam {
   using MapType = Map;
   using MapFactoryType = MapFactory;

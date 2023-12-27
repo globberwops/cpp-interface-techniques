@@ -3,12 +3,13 @@
 
 #pragma once
 
-#include <gw/crtp.hpp>         // for gw::Crtp
-#include <gw/strong_type.hpp>  // for gw::StrongType
+#include <cstddef>             // for std::size_t
+#include <gw/crtp.hpp>         // for gw::crtp
+#include <gw/strong_type.hpp>  // for gw::strong_type
 
 namespace gw::cpp_interface_techniques::crtp {
 
-using LaneId = gw::strong_type<struct LaneIdTag, size_t>;
+using LaneId = gw::strong_type<std::size_t, struct LaneIdTag>;
 
 template <typename Derived>
 class IRoad : public gw::crtp<IRoad, Derived> {
